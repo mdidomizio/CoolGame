@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,7 +38,7 @@ fun Greeting(
     var resetJob by remember { mutableStateOf<Job?>(null) }
     val namesList = listOf("Fluffy", "Whiskers", "Mittens", "Shadow", "Admiral snuggle pants III")
     var kittyName by remember { mutableStateOf(namesList[0]) }
-
+    var isNameSection by remember { mutableStateOf(true) }
 
     Text(
         text = "Feed your kitty",
@@ -51,6 +50,7 @@ fun Greeting(
             .statusBarsPadding()
             .padding(24.dp),
     )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -58,67 +58,86 @@ fun Greeting(
         verticalArrangement = Arrangement.Center,
 
         ) {
-        Text(
-            text = "name the cat"
-        )
 
-        Text(
-            text = kittyName
-        )
+        if (isNameSection) {
 
-        Button(
-            onClick = { kittyName = namesList.random() }
-        ) {
-            Text ("New name")
-        }
+            Text(
+                text = "name the cat"
+            )
 
-        Image(
-            painter = painterResource(id = R.drawable.cat),
-            contentDescription = "Kitty",
-            //modifier = Modifier.align(alignment = Alignment.Center)
-        )
+            Text(
+                text = kittyName
+            )
 
+            Button(
+                onClick = { kittyName = namesList.random() }
+            ) {
+                Text("New name")
+            }
 
-        Text(
-            text = if (hasBeenFed) {
-                "Kitty has been fed!"
-            } else ""
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
+            Image(
+                painter = painterResource(id = R.drawable.cat),
+                contentDescription = "Kitty",
+                //modifier = Modifier.align(alignment = Alignment.Center)
+            )
+
+            Button(
+                onClick = { isNameSection = false }
+            ) {
+                Text("start the game")
+            }
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.cat),
+                contentDescription = "Kitty",
+                //modifier = Modifier.align(alignment = Alignment.Center)
+            )
+
+            Text(
+                text = if (hasBeenFed) {
+                    "Kitty has been fed!"
+                } else ""
+            )
             if (hasBeenFed) {
                 return
             } else {
-                Button(
-                    onClick = {
-                        onClickOne()
-                        hasBeenFed = true
-                        resetJob?.cancel()
-                        resetJob = scope.launch {
-                            delay(3000)
-                            hasBeenFed = false
-                        }
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text("Cucumber")
-                }
 
-                Button(
-                    onClick = {
-                        onClickTwo()
-                        hasBeenFed = true
-                        resetJob?.cancel()
-                        resetJob = scope.launch {
-                            delay(3000)
-                            hasBeenFed = false
-                        }
-                    },
-                    modifier = Modifier.weight(1f)
-                ) { Text("Fish") }
+            Text("what would you feed your kitty with?")
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+
+                    Button(
+                        onClick = {
+                            onClickOne()
+                            hasBeenFed = true
+                            resetJob?.cancel()
+                            resetJob = scope.launch {
+                                delay(3000)
+                                hasBeenFed = false
+                            }
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text("Cucumber")
+                    }
+
+                    Button(
+                        onClick = {
+                            onClickTwo()
+                            hasBeenFed = true
+                            resetJob?.cancel()
+                            resetJob = scope.launch {
+                                delay(3000)
+                                hasBeenFed = false
+                            }
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) { Text("Fish") }
+                }
             }
         }
     }
