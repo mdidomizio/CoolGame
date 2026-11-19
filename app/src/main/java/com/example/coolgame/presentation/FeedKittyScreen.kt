@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun Greeting(
+fun FeedKittyScreen(
     onClickOne: () -> Unit,
     onClickTwo: () -> Unit,
     modifier: Modifier = Modifier
@@ -39,6 +39,9 @@ fun Greeting(
     val namesList = listOf("Fluffy", "Whiskers", "Mittens", "Shadow", "Admiral snuggle pants III")
     var kittyName by remember { mutableStateOf(namesList[0]) }
     var isNameSection by remember { mutableStateOf(true) }
+
+    // data class for buttons with title, isnegarive boolean
+    //
 
     Text(
         text = "Feed your kitty",

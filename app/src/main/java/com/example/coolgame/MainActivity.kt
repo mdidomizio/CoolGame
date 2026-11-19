@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.coolgame.presentation.Greeting
+import com.example.coolgame.presentation.FeedKittyScreen
 import com.example.coolgame.ui.theme.CoolGameTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoolGameTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
+                    FeedKittyScreen(
                         onClickOne = {},
                         onClickTwo = {},
                         modifier = Modifier.padding(innerPadding)
