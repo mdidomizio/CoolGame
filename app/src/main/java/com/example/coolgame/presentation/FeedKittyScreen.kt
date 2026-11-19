@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,9 +40,9 @@ fun FeedKittyScreen(
     val namesList = listOf("Fluffy", "Whiskers", "Mittens", "Shadow", "Admiral snuggle pants III")
     var kittyName by remember { mutableStateOf(namesList[0]) }
     var isNameSection by remember { mutableStateOf(true) }
-
-    // data class for buttons with title, isnegarive boolean
-    //
+    val cucumberButton: ButtonUiState = ButtonUiState("Cucumber", false)
+    val fishButton: ButtonUiState = ButtonUiState("Fish", true)
+    var isPositive by remember { mutableStateOf(false) }
 
     Text(
         text = "Feed your kitty",
@@ -93,7 +94,7 @@ fun FeedKittyScreen(
             Image(
                 painter = painterResource(id = R.drawable.cat),
                 contentDescription = "Kitty",
-                //modifier = Modifier.align(alignment = Alignment.Center)
+
             )
 
             Text(
@@ -102,21 +103,35 @@ fun FeedKittyScreen(
                 } else ""
             )
             if (hasBeenFed) {
+                Text(
+                    text = if (isPositive) {
+                        "Nyam!"
+                    } else {
+                        "Bleah"
+                    },
+                    color = if (isPositive) {
+                        Color.Green
+                    } else {
+                        Color.Red
+                    }
+                )
+            }
+            if (hasBeenFed) {
                 return
             } else {
 
-            Text("what would you feed your kitty with?")
+                Text("what would you feed your kitty with?")
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     Button(
                         onClick = {
                             onClickOne()
                             hasBeenFed = true
+                            isPositive = cucumberButton.isPositive
                             resetJob?.cancel()
                             resetJob = scope.launch {
                                 delay(3000)
@@ -125,13 +140,14 @@ fun FeedKittyScreen(
                         },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Cucumber")
+                        Text(text = cucumberButton.title)
                     }
 
                     Button(
                         onClick = {
                             onClickTwo()
                             hasBeenFed = true
+                            isPositive = fishButton.isPositive
                             resetJob?.cancel()
                             resetJob = scope.launch {
                                 delay(3000)
@@ -139,7 +155,7 @@ fun FeedKittyScreen(
                             }
                         },
                         modifier = Modifier.weight(1f)
-                    ) { Text("Fish") }
+                    ) { Text(text = fishButton.title) }
                 }
             }
         }
